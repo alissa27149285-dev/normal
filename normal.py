@@ -174,16 +174,7 @@ def main():
                 st.session_state.step = 3
                 st.rerun()
 
-    # ==========================================
-    # 步驟 3: 感謝
-    # ==========================================
-    elif st.session_state.step == 3:
-        st.balloons()
-        st.success("✅ 回饋已存檔！(可在專案資料夾查看 recommendation_log_simple.csv)")
-        if st.button("🔄 重新搜尋"):
-            for key in list(st.session_state.keys()): del st.session_state[key]
-            st.rerun()
-
+ 
 # --- 核心邏輯：純篩選 ---
 def process_filter(df, user_id, manual_cat, selected_city):
     work_df = df[
@@ -240,7 +231,7 @@ def save_feedback(scores_dict, text):
         client = gspread.authorize(creds)
 
         # 2. 打開你的「簡易版」專屬表單 (請確保名稱與 Google Sheets 上的完全一致)
-        sheet = client.open("旅遊推薦系統實驗數據_簡易版").sheet1
+        sheet = client.open("normal fb").sheet1
         
         # 3. 寫入資料
         sheet.append_row(row_data)
