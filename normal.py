@@ -21,7 +21,7 @@ VALID_CITIES = [
 @st.cache_data
 def load_data():
     try:
-        csv_file = 'TAIWAN_FULL_REFINED.csv'
+        csv_file = 'TAIWAN_FILTERED.csv'
         if not os.path.exists(csv_file):
             return None
 
