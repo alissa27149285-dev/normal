@@ -4,6 +4,8 @@ import os
 import datetime
 import re
 import uuid
+import gspread
+from google.oauth2.service_account import Credentials
 
 # --- 設定頁面 ---
 st.set_page_config(page_title="旅遊推薦系統", layout="centered")
@@ -11,8 +13,7 @@ st.set_page_config(page_title="旅遊推薦系統", layout="centered")
 # --- 定義標準縣市清單 ---
 VALID_CITIES = [
     "台北市", "新北市", "桃園市", "台中市", "台南市", "高雄市",
-    "基隆市", "新竹市", "嘉義市",
-    "宜蘭縣", "新竹縣", "苗栗縣", "彰化縣", "南投縣", "雲林縣", "嘉義縣", "屏東縣",
+    "基隆市", "宜蘭縣", "新竹縣", "苗栗縣", "彰化縣", "南投縣", "雲林縣", "嘉義縣", "屏東縣",
     "花蓮縣", "台東縣"
 ]
 
@@ -216,24 +217,36 @@ def process_filter(df, user_id, manual_cat, selected_city):
     st.session_state.recs = recs
 
 def save_feedback(scores_dict, text):
+    if 'user_data' not in st.session_state: return
     u = st.session_state.user_data
     
-    # 建立要存入的資料結構
-    data = {
-        "時間": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "User_ID": u['name'],
-        "篩選縣市": u['selected_city'],
-        "篩選主題": u['manual_cat_label']
-    }
-    
-    # 合併問卷分數
-    data.update(scores_dict)
-    data["建議回饋"] = text
-    data["推薦清單"] = "|".join([r['name'] for r in st.session_state.recs])
+    # 依照你的 Google Sheets 標題順序準備資料列 (A~L欄)
+    row_data = [
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), # A. 時間
+        u['name'],                                            # B. User_ID
+        u['selected_city'],                                   # C. 篩選縣市
+        u['manual_cat_label'],                                # D. 篩選主題
+        scores_dict["PU1"], scores_dict["PU2"], scores_dict["PU3"], # E, F, G
+        scores_dict["US1"], scores_dict["US2"], scores_dict["US3"], # H, I, J
+        text,                                                 # K. 建議回饋
+        "|".join([r['name'] for r in st.session_state.recs])  # L. 推薦清單
+    ]
 
-    f_path = 'recommendation_log_simple.csv'
-    log_df = pd.DataFrame([data])
-    log_df.to_csv(f_path, mode='a', index=False, header=not os.path.exists(f_path), encoding='utf-8-sig')
+    try:
+        # 1. 讀取你之前在 Streamlit Secrets 填好的 JSON 密碼
+        credentials_dict = dict(st.secrets["gcp_service_account"])
+        scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+        creds = Credentials.from_service_account_info(credentials_dict, scopes=scopes)
+        client = gspread.authorize(creds)
 
-if __name__ == "__main__":
-    main()
+        # 2. 打開你的「簡易版」專屬表單 (請確保名稱與 Google Sheets 上的完全一致)
+        sheet = client.open("旅遊推薦系統實驗數據_簡易版").sheet1
+        
+        # 3. 寫入資料
+        sheet.append_row(row_data)
+        st.success("✅ 回饋已成功同步至 Google 雲端！")
+        
+    except Exception as e:
+        st.error(f"雲端寫入失敗: {e}")
+        # 如果失敗，依然在本機存一份備份
+        pd.DataFrame([row_data]).to_csv('backup_log_simple.csv', mode='a', index=False, header=False)
