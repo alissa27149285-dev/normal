@@ -63,10 +63,14 @@ def load_data():
 def save_feedback(scores_dict, text):
     if 'user_data' not in st.session_state: return
     u = st.session_state.user_data
+
+    # 修正時區：強制加 8 小時轉為台灣時間
+    tw_time = (datetime.datetime.now() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S")
     
     # 準備寫入 A 到 L 欄的資料 (對應你的簡易版試算表標題)
     row_data = [
-        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), # A. 時間
+        #datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), # A. 時間
+        tw_time,
         u['name'],                                            # B. User_ID
         u['selected_city'],                                   # C. 篩選縣市
         u['manual_cat_label'],                                # D. 篩選主題
