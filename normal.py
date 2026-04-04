@@ -146,6 +146,9 @@ def main():
     elif st.session_state.step == 2:
         user = st.session_state.user_data
         st.header("推薦結果")
+
+        # --- 修改點：新增給受試者的提醒文字 ---
+        st.info("💡 **本系統的 推薦結果 會優先推薦您 熱門程度較高(評論數) 的景點，代表其旅遊品質經過較多旅客的驗證，再以 Google星級 為次排序。**")
         st.write(f"📍 **地區：** {user['selected_city']} | 🎯 **主題：** {user['manual_cat_label']}")
 
         if not st.session_state.recs:
