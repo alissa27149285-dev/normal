@@ -133,6 +133,7 @@ def main():
         st.session_state.user_id = f"User_{str(uuid.uuid4())[:8]}"
 
     if st.session_state.step == 1:
+        st.header("第一階段：內容過濾")
         st.info(f"🆔 使用者編號：**{st.session_state.user_id}**")
         selected_city = st.selectbox("您想去哪個縣市？", VALID_CITIES)
         cat_options = {"F1": "F1 - 腎上腺素活動", "F2": "F2 - 荒野自然活動", "F3": "F3 - 派對、音樂與夜生活", "F4": "F4 - 陽光、水與沙灘", "F5": "F5 - 博物館、船遊與觀景點", "F6": "F6 - 主題與動物公園", "F7": "F7 - 文化遺產", "F8": "F8 - 運動與競賽", "F9": "F9 - 美食活動", "F10": "F10 - 健康與福祉", "F11": "F11 - 自然現象"}
@@ -164,7 +165,7 @@ def main():
 
     elif st.session_state.step == 2:
         user = st.session_state.user_data
-        st.header("推薦結果")
+        st.header("第二階段：推薦結果")
 
         # --- 修改點：新增給受試者的提醒文字 ---
         st.info("💡 **本系統的 推薦結果 會優先推薦您 熱門程度較高(評論數) 的景點，代表其旅遊品質經過較多旅客的驗證，再以 Google星級 為次排序。**")
