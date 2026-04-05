@@ -120,7 +120,7 @@ def process_filter(df, user_id, manual_cat, selected_city):
 # --- 4. 主程式介面 ---
 def main():
     st.title("🗺️ 旅遊推薦系統")
-    st.caption("依照地區與主題，快速找出熱門景點")
+    st.caption("依照地區與主題，快速匹配適合您的景點")
 
     df = load_data()
     if df is None:
