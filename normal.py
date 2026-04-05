@@ -8,7 +8,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # --- 設定頁面 ---
-st.set_page_config(page_title="旅遊推薦系統 (簡易版)", layout="centered")
+st.set_page_config(page_title="旅遊推薦系統", layout="centered")
 
 # --- 定義標準縣市清單 ---
 VALID_CITIES = [
@@ -138,6 +138,25 @@ def main():
         cat_options = {"F1": "F1 - 腎上腺素活動", "F2": "F2 - 荒野自然活動", "F3": "F3 - 派對、音樂與夜生活", "F4": "F4 - 陽光、水與沙灘", "F5": "F5 - 博物館、船遊與觀景點", "F6": "F6 - 主題與動物公園", "F7": "F7 - 文化遺產", "F8": "F8 - 運動與競賽", "F9": "F9 - 美食活動", "F10": "F10 - 健康與福祉", "F11": "F11 - 自然現象"}
         manual_cat = st.selectbox("請選擇類型：", list(cat_options.keys()), format_func=lambda x: cat_options[x])
 
+# --- 新增：11 項主題詳細定義對照表 (折疊面板) ---
+        with st.expander("💡 點此查看【11 項旅遊主題】詳細定義對照表"):
+            st.markdown("""
+            | 主題代號 | 主題名稱 | 代表性活動與景點範例 |
+            | :--- | :--- | :--- |
+            | **F1** | 腎上腺素活動 | 攀岩、跳傘、滑雪、賽車、高空彈跳等刺激活動。 |
+            | **F2** | 荒野自然活動 | 森林或山區遊覽、登山步道、生態保護區。 |
+            | **F3** | 派對、音樂與夜生活 | 音樂節、遊行、夜店、酒吧、Live House。 |
+            | **F4** | 陽光、水與沙灘 | 海島渡假、沙灘、海水浴場、水上活動或泳池放鬆。 |
+            | **F5** | 博物館、船遊與觀景台 | 參觀博物館、美術館、觀景台或搭乘遊船導覽。 |
+            | **F6** | 主題與動物公園 | 動物園、水族館、水上樂園或各類主題樂園。 |
+            | **F7** | 文化遺產 | 歷史古蹟、老街、古老城市與宗教慶典。 |
+            | **F8** | 運動與競賽 | 觀看體育賽事、體育館、棒球場等。 |
+            | **F9** | 美食活動 | 參加美食節、夜市、特色景觀餐廳或品酒巡禮。 |
+            | **F10**| 健康與福祉 | 溫泉療養、SPA、按摩或美容中心。 |
+            | **F11**| 自然現象 | 觀賞雲海、地質公園、火山洞穴或特殊地景。 |
+            """)
+        # -----------------------------------------------
+        
         if st.button("🔍 搜尋推薦景點", type="primary", use_container_width=True):
             process_filter(df, st.session_state.user_id, manual_cat, selected_city)
             st.session_state.step = 2
