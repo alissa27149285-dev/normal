@@ -137,7 +137,7 @@ def main():
         st.info(f"🆔 使用者編號：**{st.session_state.user_id}**")
         selected_city = st.selectbox("您想去哪個縣市？", VALID_CITIES)
         cat_options = {"F1": "F1 - 腎上腺素活動", "F2": "F2 - 荒野自然活動", "F3": "F3 - 派對、音樂與夜生活", "F4": "F4 - 陽光、水與沙灘", "F5": "F5 - 博物館、船遊與觀景點", "F6": "F6 - 主題與動物公園", "F7": "F7 - 文化遺產", "F8": "F8 - 運動與競賽", "F9": "F9 - 美食活動", "F10": "F10 - 健康與福祉", "F11": "F11 - 自然現象"}
-        manual_cat = st.selectbox("請選擇類型：", list(cat_options.keys()), format_func=lambda x: cat_options[x])
+        manual_cat = st.selectbox("感興趣的類型：", list(cat_options.keys()), format_func=lambda x: cat_options[x])
 
 # --- 新增：11 項主題詳細定義對照表 (折疊面板) ---
         with st.expander("💡 點此查看【11 項旅遊主題】詳細定義對照表"):
