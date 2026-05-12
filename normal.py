@@ -186,7 +186,7 @@ def main():
             us2 = st.slider("US2. 我滿意系統的介面設計與操作流程", 1, 5, 3)
             us3 = st.slider("US3. 整體而言我對此系統感到滿意", 1, 5, 3)
             
-            st.subheader("推薦準確度")
+            st.subheader("準確度")
             acc = st.slider("請問在剛才的推薦結果中，有幾項是符合您的需求與期待？ (0~10項)", 0, 10, 5)
             txt = st.text_area("其他建議 (選填)：")
             if st.form_submit_button("送出回饋並結束", type="primary"):
