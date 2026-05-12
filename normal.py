@@ -179,6 +179,9 @@ def main():
         st.divider()
         with st.form("feedback"):
             st.subheader("系統使用回饋")
+            st.markdown("### 🔹 推薦準確度")
+            acc = st.slider("請問在剛才的推薦結果中，有幾項是符合您的需求與期待？ (0~10項)", 0, 10, 5)
+            
             pu1 = st.slider("PU1. 系統能幫助我更精準地推薦景點", 1, 5, 3)
             pu2 = st.slider("PU2. 系統能節省我過濾資訊的時間", 1, 5, 3)
             pu3 = st.slider("PU3. 系統能提升我規劃旅遊的效率", 1, 5, 3)
