@@ -179,15 +179,15 @@ def main():
         st.divider()
         with st.form("feedback"):
             st.subheader("系統使用回饋")
-            st.markdown("### 🔹 推薦準確度")
-            acc = st.slider("請問在剛才的推薦結果中，有幾項是符合您的需求與期待？ (0~10項)", 0, 10, 5)
-            
             pu1 = st.slider("PU1. 系統能幫助我更精準地推薦景點", 1, 5, 3)
             pu2 = st.slider("PU2. 系統能節省我過濾資訊的時間", 1, 5, 3)
             pu3 = st.slider("PU3. 系統能提升我規劃旅遊的效率", 1, 5, 3)
             us1 = st.slider("US1. 我滿意系統推薦的景點準確度", 1, 5, 3)
             us2 = st.slider("US2. 我滿意系統的介面設計與操作流程", 1, 5, 3)
             us3 = st.slider("US3. 整體而言我對此系統感到滿意", 1, 5, 3)
+            
+            st.subheader("推薦準確度")
+            acc = st.slider("請問在剛才的推薦結果中，有幾項是符合您的需求與期待？ (0~10項)", 0, 10, 5)
             txt = st.text_area("其他建議 (選填)：")
             if st.form_submit_button("送出回饋並結束", type="primary"):
                 scores = {"PU1": pu1, "PU2": pu2, "PU3": pu3, "US1": us1, "US2": us2, "US3": us3}
